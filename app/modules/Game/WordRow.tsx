@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { WordLetter } from "./WordLetter";
+import { StatusUnion, WordLetter } from "./WordLetter";
 import { useKeyPress } from "@/app/hooks/useKeyPress";
 
 type Props = {
@@ -36,15 +36,31 @@ export const WordRow: FC<Props> = ({ word, isActive, isSubmitted, submit }) => {
       return;
     }
     setEnteredLetters((prev) => [...prev, key]);
+    console.log(`Length of arr is ${enteredLetters.length}`);
   };
 
   useKeyPress(typingHandler);
 
+  const computeStatus = (id: number): StatusUnion => {
+    if (isActive) {
+      return id === enteredLetters.length ||
+        (id === WORD_LENGTH - 1 && enteredLetters.length === WORD_LENGTH)
+        ? "editing"
+        : "none";
+    }
+    if (isSubmitted) {
+      if (enteredLetters[id] === word[id]) return "correct";
+      if (word.includes(enteredLetters[id])) return "badly-placed";
+    }
+    return "none";
+  };
+
   return (
     <div className="flex gap-3  ">
       {[...enteredLetters, ...NOT_ENTERED_LETTERS].map((letter, index) => (
-        <WordLetter key={index} status="none" letter={letter} />
+        <WordLetter key={index} status={computeStatus(index)} letter={letter} />
       ))}
+      {/* THIS SHOULD NOT WORK IF LINE IS NOT COMPLETE */}
       {isActive && <button onClick={submit}>Submit</button>}
     </div>
   );

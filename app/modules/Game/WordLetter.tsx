@@ -1,13 +1,15 @@
 import { FC } from "react";
 
+export type StatusUnion = "correct" | "badly-placed" | "none" | "editing";
+
 type Props = {
-  status: "correct" | "badly-placed" | "none" | "editing";
+  status: StatusUnion;
   letter?: string;
 };
 
 export const WordLetter: FC<Props> = ({ letter = " ", status }) => {
   const className =
-    "p-3 w-24 rounded text-2xl text-bold text-black flex justify-center items-center aspect-square " +
+    "p-3 w-24 rounded text-2xl text-bold text-black flex justify-center items-center aspect-square transition " +
     (() => {
       switch (status) {
         case "correct":
