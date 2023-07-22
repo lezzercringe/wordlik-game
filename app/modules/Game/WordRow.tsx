@@ -1,5 +1,6 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { WordLetter } from "./WordLetter";
+import { useKeyPress } from "@/app/hooks/useKeyPress";
 
 type Props = {
   word: string;
@@ -18,11 +19,26 @@ export const WordRow: FC<Props> = ({ word, isActive, isSubmitted, submit }) => {
     (_, index) => " "
   );
 
-  useEffect(() => {
-    if (!isActive) {
+  // FIXME
+  const typingHandler = (key: string) => {
+    if (
+      !isActive ||
+      (word.length === enteredLetters.length && key !== "Backspace")
+    )
+      return;
+
+    if (key === "Backspace" && enteredLetters.length > 0) {
+      setEnteredLetters((prev) => prev.slice(0, prev.length - 1));
       return;
     }
-  }, [enteredLetters, isActive]);
+
+    if (key.length > 1 || !/[а-яА-Яa-zA-Z]/.test(key)) {
+      return;
+    }
+    setEnteredLetters((prev) => [...prev, key]);
+  };
+
+  useKeyPress(typingHandler);
 
   return (
     <div className="flex gap-3  ">
