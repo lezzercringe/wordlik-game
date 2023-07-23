@@ -41,7 +41,7 @@ export const WordRow: FC<Props> = ({ word, isActive, isSubmitted, submit }) => {
     if (key.length > 1 || !/[а-яА-Яa-zA-Z]/.test(key)) {
       return;
     }
-    setEnteredLetters((prev) => [...prev, key]);
+    setEnteredLetters((prev) => [...prev, key.toUpperCase()]);
   };
 
   useKeyPress(typingHandler);
@@ -56,6 +56,7 @@ export const WordRow: FC<Props> = ({ word, isActive, isSubmitted, submit }) => {
     if (isSubmitted) {
       if (enteredLetters[id] === word[id]) return "correct";
       if (word.includes(enteredLetters[id])) return "badly-placed";
+      return "not-found";
     }
     return "none";
   };
