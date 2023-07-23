@@ -13,7 +13,7 @@ const payloadSchema = z.object({
 
 type PayloadType = z.infer<typeof payloadSchema>;
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   try {
     const res = payloadSchema.parse(await request.json());
     const id = uid();

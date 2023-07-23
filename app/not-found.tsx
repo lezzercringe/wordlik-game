@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { StatusUnion, WordLetter } from "./modules/Game/WordLetter";
 import { WordRow } from "./modules/Game/WordRow";
 import Link from "next/link";
+import { ChevronLeftSquare } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "404 | Not found",
@@ -26,7 +27,8 @@ export default async function NotFound() {
           />
         ))}
       </div>
-      <Link className="opacity-50" href={"/"}>
+      <Link className="opacity-50 flex gap-3" href={"/"}>
+        <ChevronLeftSquare />
         Navigate home
       </Link>
     </div>

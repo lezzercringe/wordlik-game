@@ -2,7 +2,7 @@ import { GameField } from "@/app/modules/Game/WordField";
 import { kv } from "@vercel/kv";
 import { notFound } from "next/navigation";
 
-export async function fetchWord(id: string): Promise<string> {
+async function fetchWord(id: string): Promise<string> {
   const data = await kv.get<string>(id);
   if (!data) notFound();
   return data;
