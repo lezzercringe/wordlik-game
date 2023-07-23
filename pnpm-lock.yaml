@@ -50,6 +50,9 @@ dependencies:
   uid:
     specifier: ^2.0.2
     version: 2.0.2
+  zod:
+    specifier: ^3.21.4
+    version: 3.21.4
 
 packages:
 
