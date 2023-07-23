@@ -10,19 +10,24 @@ type Props = {
 export const GameField: FC<Props> = ({ word, triesCount }) => {
   const tries = Array.from({ length: triesCount }, (_, index) => index);
 
+  const [isWin, setIsWin] = useState<boolean>(false);
   const [isGameOver, setisGameOver] = useState<boolean>(false);
   const [activeLine, setActiveLine] = useState<number | null>(0);
 
   const submitHandler = (enteredWord: string) => {
-    if (activeLine === triesCount - 1) {
-      setisGameOver(true);
-      setActiveLine(null);
-      return;
-    }
     if (enteredWord === word) {
       setisGameOver(true);
+      setIsWin(true);
     }
-    setActiveLine((prev) => (prev as number) + 1);
+    if (activeLine === triesCount - 1) {
+      setActiveLine(null);
+      setisGameOver(true);
+      if (word !== enteredWord) {
+        setIsWin(false);
+      }
+    } else {
+      setActiveLine((prev) => (prev as number) + 1);
+    }
   };
 
   return (
@@ -36,11 +41,13 @@ export const GameField: FC<Props> = ({ word, triesCount }) => {
           key={tryNumber}
         />
       ))}
-      {isGameOver && (
+      {isGameOver && isWin && (
         <p>
-          You won! {activeLine}/{tries.length} tries!
+          You won! {activeLine ? activeLine : tries.length}/{tries.length}{" "}
+          tries!
         </p>
-      )}
+      )}{" "}
+      {isGameOver && !isWin && <p>You lost! So sorry</p>}
     </div>
   );
 };
