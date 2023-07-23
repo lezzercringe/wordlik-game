@@ -6,7 +6,7 @@ type Props = {
   word: string;
   isActive: boolean;
   isSubmitted: boolean;
-  submit: () => void;
+  submit: (enteredWord: string) => void;
 };
 
 export const WordRow: FC<Props> = ({ word, isActive, isSubmitted, submit }) => {
@@ -23,7 +23,9 @@ export const WordRow: FC<Props> = ({ word, isActive, isSubmitted, submit }) => {
   const typingHandler = (key: string) => {
     if (
       !isActive ||
-      (word.length === enteredLetters.length && key !== "Backspace")
+      (word.length === enteredLetters.length &&
+        key !== "Backspace" &&
+        key !== "Enter")
     )
       return;
 
@@ -31,12 +33,15 @@ export const WordRow: FC<Props> = ({ word, isActive, isSubmitted, submit }) => {
       setEnteredLetters((prev) => prev.slice(0, prev.length - 1));
       return;
     }
+    if (key === "Enter" && enteredLetters.length === word.length) {
+      submit(enteredLetters.join(""));
+      return;
+    }
 
     if (key.length > 1 || !/[а-яА-Яa-zA-Z]/.test(key)) {
       return;
     }
     setEnteredLetters((prev) => [...prev, key]);
-    console.log(`Length of arr is ${enteredLetters.length}`);
   };
 
   useKeyPress(typingHandler);
@@ -60,8 +65,6 @@ export const WordRow: FC<Props> = ({ word, isActive, isSubmitted, submit }) => {
       {[...enteredLetters, ...NOT_ENTERED_LETTERS].map((letter, index) => (
         <WordLetter key={index} status={computeStatus(index)} letter={letter} />
       ))}
-      {/* THIS SHOULD NOT WORK IF LINE IS NOT COMPLETE */}
-      {isActive && <button onClick={submit}>Submit</button>}
     </div>
   );
 };

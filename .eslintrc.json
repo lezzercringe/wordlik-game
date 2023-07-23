@@ -1,6 +1,7 @@
 {
   "extends": "next/core-web-vitals",
   "rules": {
-    "no-unused-expressions": "warn"
+    "no-unused-expressions": "warn",
+    "no-console": "error"
   }
 }
