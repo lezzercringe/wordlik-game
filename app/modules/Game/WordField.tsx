@@ -27,7 +27,6 @@ export const GameField: FC<Props> = ({ word, triesCount }) => {
 
   return (
     <div className="flex flex-col  gap-3 p-3 ">
-      {isGameOver && <p>Game over!</p>}
       {tries.map((tryNumber) => (
         <WordRow
           isSubmitted={activeLine === null || activeLine > tryNumber}
@@ -37,6 +36,11 @@ export const GameField: FC<Props> = ({ word, triesCount }) => {
           key={tryNumber}
         />
       ))}
+      {isGameOver && (
+        <p>
+          You won! {activeLine}/{tries.length} tries!
+        </p>
+      )}
     </div>
   );
 };
