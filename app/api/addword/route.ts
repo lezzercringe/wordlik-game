@@ -1,8 +1,9 @@
-import { NextResponse } from "next/server";
 import { z } from "zod";
 import { kv } from "@vercel/kv";
 import { uid } from "uid";
-import { WordRecord } from "@/app/lib/types/api";
+
+import { NextResponse } from "next/server";
+import type { WordRecord } from "@lib/types/api";
 
 const payloadSchema = z.object({
   word: z

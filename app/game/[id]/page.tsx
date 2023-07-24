@@ -1,5 +1,5 @@
-import { WordRecord } from "@/app/lib/types/api";
-import { GameField } from "@/app/modules/Game/WordField";
+import { WordRecord } from "@lib/types/api";
+import { GameField } from "@modules/Game/WordField";
 import { kv } from "@vercel/kv";
 import { notFound } from "next/navigation";
 

@@ -2,7 +2,7 @@
 import { FC, useState } from "react";
 import { WordRow } from "./WordRow";
 import { Keyboard, UserCircle2 } from "lucide-react";
-import { incrementSolvedTimesQuery } from "@/app/lib/utils/incrementSolvedTimes";
+import { incrementSolvedTimesQuery } from "@utils/incrementSolvedTimes";
 
 type Props = {
   word: string;

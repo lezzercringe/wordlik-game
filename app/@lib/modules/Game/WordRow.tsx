@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import { StatusUnion, WordLetter } from "./WordLetter";
-import { useKeyPress } from "@/app/hooks/useKeyPress";
+import { useKeyPress } from "@hooks/useKeyPress";
+import { regexCyrillicUpper, regexLatinUpper } from "@utils/regex";
 
 type Props = {
   word: string;
@@ -19,9 +20,6 @@ export const WordRow: FC<Props> = ({
 }) => {
   const WORD_LENGTH = word.length;
 
-  const regexCyrillicUpper = /^[А-ЯЁ]+$/;
-  const regexLatinUpper = /^[A-Z]+$/;
-
   const [enteredLetters, setEnteredLetters] = useState<string[]>([]);
 
   const NOT_ENTERED_LETTERS = Array.from(
@@ -29,32 +27,33 @@ export const WordRow: FC<Props> = ({
     (_, index) => " "
   );
 
-  // FIXME
   const typingHandler = (key: string) => {
     if (
       !isActive ||
       (word.length === enteredLetters.length &&
-        key !== "Backspace" &&
-        key !== "Enter")
+        !["Backspace", "Enter"].includes(key))
     )
       return;
 
     if (key === "Backspace" && enteredLetters.length > 0) {
-      setEnteredLetters((prev) => prev.slice(0, prev.length - 1));
+      setEnteredLetters((prev) => prev.slice(0, -1));
       return;
     }
+
     if (key === "Enter" && enteredLetters.length === word.length) {
       submit(enteredLetters.join(""));
       return;
     }
 
-    if (key.length > 1) {
-      return;
-    }
+    if (key.length > 1) return;
 
     const upperCaseKey = key.toUpperCase();
-    if (layout === "ru" && !regexCyrillicUpper.test(upperCaseKey)) return;
-    if (layout === "us" && !regexLatinUpper.test(upperCaseKey)) return;
+    if (
+      (layout === "ru" && !regexCyrillicUpper.test(upperCaseKey)) ||
+      (layout === "us" && !regexLatinUpper.test(upperCaseKey))
+    )
+      return;
+
     setEnteredLetters((prev) => [...prev, upperCaseKey]);
   };
 

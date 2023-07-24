@@ -6,7 +6,7 @@ export const incrementSolvedTimes = async (id: string): Promise<number> => {
 };
 
 export const incrementSolvedTimesQuery = async (id: string) => {
-  return await fetch(`https://${HOST_URL}/api/incrementSolvedCount`, {
+  return await fetch(`${HOST_URL}/api/incrementSolvedCount`, {
     method: "POST",
     body: JSON.stringify({ id }),
   });

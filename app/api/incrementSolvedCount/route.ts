@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { kv } from "@vercel/kv";
-import { uid } from "uid";
-import { WordRecord } from "@/app/lib/types/api";
-import { incrementSolvedTimes } from "@/app/lib/utils/incrementSolvedTimes";
+import { incrementSolvedTimes } from "@utils/incrementSolvedTimes";
 
 const payloadSchema = z.object({
   id: z.string(),

@@ -1,11 +1,9 @@
-import { MainForm } from "./modules/Form/MainForm";
+import { WordForm } from "@modules/Form/WordForm";
 
 export default function Home() {
   return (
-    <main className=" flex w-full gap-4  h-screen justify-center pt-14">
-      <div>
-        <MainForm />
-      </div>
+    <main className=" flex w-full h-screen justify-center items-center">
+      <WordForm />
     </main>
   );
 }

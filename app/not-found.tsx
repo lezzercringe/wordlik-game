@@ -1,8 +1,8 @@
-import { Metadata } from "next";
-import { StatusUnion, WordLetter } from "./modules/Game/WordLetter";
-import { WordRow } from "./modules/Game/WordRow";
 import Link from "next/link";
+import { Metadata } from "next";
 import { ChevronLeftSquare } from "lucide-react";
+
+import { StatusUnion, WordLetter } from "@modules/Game/WordLetter";
 
 export const metadata: Metadata = {
   title: "404 | Not found",
