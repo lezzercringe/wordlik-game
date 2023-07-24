@@ -1,23 +1,38 @@
 "use client";
 import { FC, useState } from "react";
 import { WordRow } from "./WordRow";
+import { Keyboard, UserCircle2 } from "lucide-react";
+import { incrementSolvedTimesQuery } from "@/app/lib/utils/incrementSolvedTimes";
 
 type Props = {
   word: string;
   triesCount: number;
+  solvedTimes: number;
+  layout: "us" | "ru";
+  wordId: string;
 };
 
-export const GameField: FC<Props> = ({ word, triesCount }) => {
+export const GameField: FC<Props> = ({
+  word,
+  triesCount,
+  layout,
+  wordId,
+  solvedTimes,
+}) => {
   const tries = Array.from({ length: triesCount }, (_, index) => index);
 
   const [isWin, setIsWin] = useState<boolean>(false);
   const [isGameOver, setisGameOver] = useState<boolean>(false);
   const [activeLine, setActiveLine] = useState<number | null>(0);
+  const [optimisticSolvedTimes, setOptimisticSolvedTimes] =
+    useState<number>(solvedTimes);
 
   const submitHandler = (enteredWord: string) => {
     if (enteredWord === word) {
       setisGameOver(true);
       setIsWin(true);
+      setOptimisticSolvedTimes((prev) => prev + 1);
+      incrementSolvedTimesQuery(wordId);
     }
     if (activeLine === triesCount - 1) {
       setActiveLine(null);
@@ -32,8 +47,17 @@ export const GameField: FC<Props> = ({ word, triesCount }) => {
 
   return (
     <div className="flex flex-col  gap-3 p-3 ">
+      <span className="flex gap-3 opacity-50 font-bold">
+        <Keyboard />
+        {layout === "us" ? "Английская раскладка" : "Русская раскладка"}
+      </span>
+      <span className="flex gap-3 opacity-50 font-bold">
+        <UserCircle2 />
+        Решено {optimisticSolvedTimes} раз {isWin && "🎉"}
+      </span>
       {tries.map((tryNumber) => (
         <WordRow
+          layout={layout}
           isSubmitted={activeLine === null || activeLine > tryNumber}
           isActive={!isGameOver && activeLine === tryNumber}
           word={word}
@@ -41,13 +65,6 @@ export const GameField: FC<Props> = ({ word, triesCount }) => {
           key={tryNumber}
         />
       ))}
-      {isGameOver && isWin && (
-        <p>
-          You won! {activeLine ? activeLine : tries.length}/{tries.length}{" "}
-          tries!
-        </p>
-      )}{" "}
-      {isGameOver && !isWin && <p>You lost! So sorry</p>}
     </div>
   );
 };

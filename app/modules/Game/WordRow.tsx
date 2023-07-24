@@ -4,13 +4,23 @@ import { useKeyPress } from "@/app/hooks/useKeyPress";
 
 type Props = {
   word: string;
+  layout: "us" | "ru";
   isActive: boolean;
   isSubmitted: boolean;
   submit: (enteredWord: string) => void;
 };
 
-export const WordRow: FC<Props> = ({ word, isActive, isSubmitted, submit }) => {
+export const WordRow: FC<Props> = ({
+  word,
+  isActive,
+  isSubmitted,
+  submit,
+  layout,
+}) => {
   const WORD_LENGTH = word.length;
+
+  const regexCyrillicUpper = /^[А-ЯЁ]+$/;
+  const regexLatinUpper = /^[A-Z]+$/;
 
   const [enteredLetters, setEnteredLetters] = useState<string[]>([]);
 
@@ -38,10 +48,14 @@ export const WordRow: FC<Props> = ({ word, isActive, isSubmitted, submit }) => {
       return;
     }
 
-    if (key.length > 1 || !/[а-яА-Яa-zA-Z]/.test(key)) {
+    if (key.length > 1) {
       return;
     }
-    setEnteredLetters((prev) => [...prev, key.toUpperCase()]);
+
+    const upperCaseKey = key.toUpperCase();
+    if (layout === "ru" && !regexCyrillicUpper.test(upperCaseKey)) return;
+    if (layout === "us" && !regexLatinUpper.test(upperCaseKey)) return;
+    setEnteredLetters((prev) => [...prev, upperCaseKey]);
   };
 
   useKeyPress(typingHandler);
