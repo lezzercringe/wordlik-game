@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { ZodError, z } from "zod";
 import { kv } from "@vercel/kv";
 import { uid } from "uid";
 
@@ -14,7 +14,7 @@ const payloadSchema = z.object({
   layout: z.union([z.literal("ru"), z.literal("us")]),
 });
 
-type PayloadType = z.infer<typeof payloadSchema>;
+export type PayloadType = z.infer<typeof payloadSchema>;
 
 export async function POST(request: Request) {
   try {
@@ -30,6 +30,6 @@ export async function POST(request: Request) {
     await kv.hset(id, payload);
     return NextResponse.json({ id });
   } catch (e) {
-    return NextResponse.json("Error bad request", { status: 400 });
+    return NextResponse.json({ error: "Bad request" }, { status: 400 });
   }
 }

@@ -2,8 +2,10 @@ import { WordForm } from "@modules/Form/WordForm";
 
 export default function Home() {
   return (
-    <main className=" flex w-full h-screen justify-center items-center">
-      <WordForm />
+    <main className="grid grid-cols-6 items-center h-screen">
+      <div className="col-start-3 col-span-2">
+        <WordForm />
+      </div>
     </main>
   );
 }

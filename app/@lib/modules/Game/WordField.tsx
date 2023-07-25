@@ -3,12 +3,13 @@ import { FC, useState } from "react";
 import { WordRow } from "./WordRow";
 import { Keyboard, UserCircle2 } from "lucide-react";
 import { incrementSolvedTimesQuery } from "@utils/incrementSolvedTimes";
+import { Layout } from "@lib/types/api";
 
 type Props = {
   word: string;
   triesCount: number;
   solvedTimes: number;
-  layout: "us" | "ru";
+  layout: Layout;
   wordId: string;
 };
 

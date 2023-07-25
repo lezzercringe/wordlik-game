@@ -2,10 +2,11 @@ import { FC, useState } from "react";
 import { StatusUnion, WordLetter } from "./WordLetter";
 import { useKeyPress } from "@hooks/useKeyPress";
 import { regexCyrillicUpper, regexLatinUpper } from "@utils/regex";
+import { Layout } from "@lib/types/api";
 
 type Props = {
   word: string;
-  layout: "us" | "ru";
+  layout: Layout;
   isActive: boolean;
   isSubmitted: boolean;
   submit: (enteredWord: string) => void;

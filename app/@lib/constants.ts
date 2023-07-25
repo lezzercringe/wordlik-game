@@ -8,3 +8,6 @@ export const HOST_URL = (() => {
   }
   return `http://${localhost}`;
 })();
+
+export const MAX_WORD_LENGTH = 8;
+export const MIN_WORD_LENGTH = 3;

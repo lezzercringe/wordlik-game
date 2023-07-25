@@ -24,6 +24,7 @@
       "@lib/*": ["./app/@lib/*"],
       "@modules/*": ["./app/@lib/modules/*"],
       "@hooks/*": ["./app/@lib/hooks/*"],
+      "@ui/*": ["./app/@lib/ui/*"],
       "@utils/*": ["./app/@lib/utils/*"]
     }
   },
