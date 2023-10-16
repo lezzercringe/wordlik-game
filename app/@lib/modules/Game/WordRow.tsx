@@ -1,15 +1,24 @@
 import { FC, useState } from "react";
 import { StatusUnion, WordLetter } from "./WordLetter";
-import { useKeyPress } from "@/app/hooks/useKeyPress";
+import { useKeyPress } from "@hooks/useKeyPress";
+import { regexCyrillicUpper, regexLatinUpper } from "@utils/regex";
+import { Layout } from "@lib/types/api";
 
 type Props = {
   word: string;
+  layout: Layout;
   isActive: boolean;
   isSubmitted: boolean;
   submit: (enteredWord: string) => void;
 };
 
-export const WordRow: FC<Props> = ({ word, isActive, isSubmitted, submit }) => {
+export const WordRow: FC<Props> = ({
+  word,
+  isActive,
+  isSubmitted,
+  submit,
+  layout,
+}) => {
   const WORD_LENGTH = word.length;
 
   const [enteredLetters, setEnteredLetters] = useState<string[]>([]);
@@ -19,29 +28,34 @@ export const WordRow: FC<Props> = ({ word, isActive, isSubmitted, submit }) => {
     (_, index) => " "
   );
 
-  // FIXME
   const typingHandler = (key: string) => {
     if (
       !isActive ||
       (word.length === enteredLetters.length &&
-        key !== "Backspace" &&
-        key !== "Enter")
+        !["Backspace", "Enter"].includes(key))
     )
       return;
 
     if (key === "Backspace" && enteredLetters.length > 0) {
-      setEnteredLetters((prev) => prev.slice(0, prev.length - 1));
+      setEnteredLetters((prev) => prev.slice(0, -1));
       return;
     }
+
     if (key === "Enter" && enteredLetters.length === word.length) {
       submit(enteredLetters.join(""));
       return;
     }
 
-    if (key.length > 1 || !/[а-яА-Яa-zA-Z]/.test(key)) {
+    if (key.length > 1) return;
+
+    const upperCaseKey = key.toUpperCase();
+    if (
+      (layout === "ru" && !regexCyrillicUpper.test(upperCaseKey)) ||
+      (layout === "us" && !regexLatinUpper.test(upperCaseKey))
+    )
       return;
-    }
-    setEnteredLetters((prev) => [...prev, key]);
+
+    setEnteredLetters((prev) => [...prev, upperCaseKey]);
   };
 
   useKeyPress(typingHandler);
@@ -56,6 +70,7 @@ export const WordRow: FC<Props> = ({ word, isActive, isSubmitted, submit }) => {
     if (isSubmitted) {
       if (enteredLetters[id] === word[id]) return "correct";
       if (word.includes(enteredLetters[id])) return "badly-placed";
+      return "not-found";
     }
     return "none";
   };
